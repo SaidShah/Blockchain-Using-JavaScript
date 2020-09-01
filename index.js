@@ -33,10 +33,27 @@ class Blockchain {
         newBlock.hash         = newBlock.calculateHash();
         this.chain.push(newBlock);
     }
+
+    isChainValid() {
+        for(let i = 1; i < this.chain.length; i++) {
+            let currentBlock  = this.chain[i];
+            let previousBlock = this.chain[i - 1];
+
+            if(currentBlock.hash !== currentBlock.calculateHash()) {
+                return false;
+            }
+
+            if(currentBlock.previousHash !== previousBlock.hash) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
 
 let blockchain = new Blockchain();
 blockchain.addBlock(new Block(1, "08/23/2020", { coins: 23 }));
 blockchain.addBlock(new Block(2, "08/29/2020", { coins: 11 }));
 
-console.log(JSON.stringify(blockchain, null, 2))
+console.log(JSON.stringify(blockchain, null, 2));
